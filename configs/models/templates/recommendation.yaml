@@ -1,0 +1,79 @@
+models:
+  recommendation:
+    collaborative_filtering_user_based:
+      library: surprise
+      implementation: KNNBasic
+      hyperparameters:
+        k: [10, 20, 40, 50]  # Number of neighbors
+        min_k: [1, 5, 10]  # Minimum neighbors to consider
+        sim_options:
+          name: ["cosine", "pearson", "msd"]
+          user_based: [True]  # User-based collaborative filtering
+
+    collaborative_filtering_item_based:
+      library: surprise
+      implementation: KNNBasic
+      hyperparameters:
+        k: [10, 20, 40, 50]
+        min_k: [1, 5, 10]
+        sim_options:
+          name: ["cosine", "pearson", "msd"]
+          user_based: [False]  # Item-based collaborative filtering
+
+    matrix_factorization_svd:
+      library: surprise
+      implementation: SVD
+      hyperparameters:
+        n_factors: [50, 100, 150]  # Number of latent factors
+        n_epochs: [20, 50, 100]  # Number of iterations
+        lr_all: [0.005, 0.01, 0.02]  # Learning rate
+        reg_all: [0.02, 0.05, 0.1]  # Regularization parameter
+
+    matrix_factorization_svdpp:
+      library: surprise
+      implementation: SVDpp
+      hyperparameters:
+        n_factors: [50, 100, 150]
+        n_epochs: [20, 50, 100]
+        lr_all: [0.005, 0.01, 0.02]
+        reg_all: [0.02, 0.05, 0.1]
+
+    non_negative_matrix_factorization:
+      library: sklearn.decomposition
+      implementation: NMF
+      hyperparameters:
+        n_components: [10, 20, 30]  # Number of latent factors
+        init: ["random", "nndsvd"]
+        solver: ["cd", "mu"]
+        beta_loss: ["frobenius", "kullback-leibler"]
+        max_iter: [200, 500]
+        random_state: [42]
+
+    neural_collaborative_filtering:
+      library: keras.models
+      implementation: Sequential
+      hyperparameters:
+        embedding_size: [16, 32, 64]  # Size of embedding vectors
+        layers: [[128, 64], [256, 128, 64]]  # Hidden layer sizes
+        dropout_rate: [0.2, 0.4, 0.5]
+        activation: ["relu", "sigmoid"]
+        epochs: [20, 50, 100]
+        batch_size: [32, 64, 128]
+        optimizer: ["adam", "rmsprop"]
+
+    content_based_recommendation:
+      library: sklearn.neighbors
+      implementation: NearestNeighbors
+      hyperparameters:
+        n_neighbors: [5, 10, 20, 50]
+        algorithm: ["auto", "ball_tree", "kd_tree", "brute"]
+        metric: ["cosine", "euclidean", "manhattan"]
+
+    hybrid_recommendation:
+      description: Combines collaborative and content-based filtering.
+      library: custom
+      implementation: HybridRecommender
+      hyperparameters:
+        alpha: [0.2, 0.5, 0.8]  # Weight for collaborative filtering
+        beta: [0.2, 0.5, 0.8]  # Weight for content-based filtering
+        similarity_metric: ["cosine", "pearson"]

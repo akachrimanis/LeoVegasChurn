@@ -1,0 +1,79 @@
+info:
+  project_root: "/Users/tkax/dev/aimonetize/WIP/LeoVegasChurn/"
+  project_name: "DistroEnergyML"
+  project_description: "Churn prediction project"
+  model_type: "regression"  # Options: regression, classification, clustering, anomaly_detection, ranking, time_series, multi_label_classification, multi_class_classification, object_detection, segmentation, reinforcement_learning 
+  model_config_folder: "/Users/tkax/dev/aimonetize/WIP/LeoVegasChurn/configs/models"
+  cv_folder: "/Users/tkax/dev/aimonetize/WIP/LeoVegasChurn/src/CV"
+
+plots:
+  output_path: "/Users/tkax/dev/aimonetize/WIP/LeoVegasChurn/data/performance_plots"
+
+feast:
+  feature_store_path: "/Users/tkax/dev/aimonetize/WIP/LeoVegasChurn/data/feast/feature_store.db"
+  feature_store_name: "leo_vegas_churn"
+  entity_name: "product_id"
+  feature_table_name: "leo_vegas_churn_features"
+  feature_table_path: ""
+  feature_table_schema: ""
+  
+mlflow:
+  set_tracking_uri: 'http://127.0.0.1:5000'
+  experiment_name: "churn/elasticnet/baseline"  # Example: read from config
+
+etl:
+  raw_data_path: "/Users/tkax/dev/aimonetize/WIP/LeoVegasChurn/data/raw/data.csv"
+  processed_data_path: "/Users/tkax/dev/aimonetize/WIP/LeoVegasChurn/data/processed/processed_data.pkl"
+  target_column: ""
+  date_columns: ["date"]
+  data_batch_size: None
+  ids: ["player_key"]
+
+data_prep:
+  engineered_data_path: "/Users/tkax/dev/aimonetize/WIP/LeoVegasChurn/data/processed/engineered_data.pkl"
+  target_column: ""
+  ordinal_columns: []
+  date_columns: ['DateTime']
+  exclude_columns_scaling: []
+  drop_cols: []
+  
+FE:
+  date_column: 'DateTime'
+  target_column: 'Demand_kW'
+  encoding_params: 
+    scaler_type: 'standard'
+    scaling_criteria: 'all_numeric'
+
+variables:
+  categorical_vars: []
+  drop_cols: ['DateTime']
+  X: []
+  y: "Demand_kW"
+  date_columns: ["DateTime"]
+
+train:
+  model_type: "random_forest"  # Options: elasticnet, random_forest, xgboost
+  model_types: ["elasticnet", "random_forest", "xgboost", "ridge", "lasso", "decision_tree_regressor"]
+  search_method: "grid_search"  # Options: grid_search, random_search
+  test_size: 0.2
+  random_state: 42
+  model_save_path: "/Users/tkax/dev/aimonetize/WIP/LeoVegasChurn/data/models/trained_model.pkl"
+
+  # Default model parameters
+  model_params:
+    elasticnet: {"alpha": 0.5, "l1_ratio": 0.5}
+    random_forest: {"n_estimators": 100, "max_depth": 20}
+    xgboost: {"max_depth": 6, "learning_rate": 0.1, "n_estimators": 200}
+
+  # Cross-validation parameters
+  cv_params:
+    elasticnet:
+      alpha: [0.1, 0.5, 1.0]
+      l1_ratio: [0.1, 0.5, 0.9]
+    random_forest:
+      n_estimators: [50, 100, 200]
+      max_depth: [10, 20, 30]
+    xgboost:
+      max_depth: [3, 6, 9]
+      learning_rate: [0.01, 0.1, 0.2]
+      n_estimators: [100, 200, 300]
