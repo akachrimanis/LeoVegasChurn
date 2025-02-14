@@ -2825,6 +2825,22 @@ files = [
 ]
 
 [[package]]
+name = "loky"
+version = "3.4.1"
+description = "A robust implementation of concurrent.futures.ProcessPoolExecutor"
+optional = false
+python-versions = ">=3.7"
+groups = ["main"]
+markers = "python_version == \"3.11\" or python_version >= \"3.12\""
+files = [
+    {file = "loky-3.4.1-py3-none-any.whl", hash = "sha256:7132da80d1a057b5917ff32c7867b65ed164aae84c259a1dbc44375791280c87"},
+    {file = "loky-3.4.1.tar.gz", hash = "sha256:66db350de68c301299c882ace3b8f06ba5c4cb2c45f8fcffd498160ce8280753"},
+]
+
+[package.dependencies]
+cloudpickle = "*"
+
+[[package]]
 name = "lux-api"
 version = "0.5.1"
 description = "A Python API for Intelligent Data Discovery"
@@ -7446,4 +7462,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11, <3.13"
-content-hash = "9c40bcb34c6e2ff9aee33ce21a2236be1cd61e52b10ec22d0b75171728a206d4"
+content-hash = "30d84c8824263f99591aa6c53ced97a8e63a889f2d0cc6250698fbed60cb06a8"
